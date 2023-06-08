@@ -1,0 +1,73 @@
+# 开发环境配置
+app:
+  prefix: '/api'
+  port: 8080
+  swagger: true
+  logger:
+    # 项目日志存储路径，相对路径（相对本项目根目录）或绝对路径
+    dir: '../logs'
+  # 文件相关
+  file:
+    # location 文件上传后存储目录，相对路径（相对本项目根目录）或绝对路径
+    location: '../upload'
+    # 文件服务器地址，开发环境
+    domain: 'http://localhost:8081'
+    # 文件虚拟路径, 必须以 / 开头， 如 http://localhost:8081/static/****.jpg  , 如果不需要则 设置 ''
+    serveRoot: '/static'
+# 数据库配置
+db:
+  mysql:
+    host: '81.70.97.245'
+    username: 'tethys-hdp'
+    password: 'zryBDPCwBNWsMiBz'
+    database: 'tethys-hdp'
+    port: 3306
+    charser: 'utf8mb4'
+    logger: 'advanced-console'
+    logging: true
+    multipleStatements: true
+    dropSchema: false
+    synchronize: true
+    supportBigNumbers: true
+    bigNumberStrings: true
+
+# redis 配置
+redis:
+  host: '81.70.97.245'
+  port: 6379
+  db: 0
+  keyPrefix: '170901@Fzb'
+
+# jwt 配置
+jwt:
+  secretkey: 'zANDwNQVFzxlfG9myPxVWAkq4iXJEPhI'
+  expiresin: '8h'
+  refreshExpiresIn: '2h'
+# 权限 白名单配置
+perm:
+  router:
+    whitelist:
+      [
+        { path: '/api/register', method: 'POST' },
+        { path: '/api/login', method: 'POST' },
+        { path: '/api/perm/{id}', method: 'GET' },
+        { path: '/api/oss/upload', method: 'POST' },
+      ]
+
+# 用户相关
+# 初始密码， 重置密码
+user:
+  default: '000000'
+  roleList:
+    {
+      SUPER_ADMIN: 0, # 超级管理员
+      ADMIN: 1, # 管理员
+      DEVELOPER: 2, # 开发者（测试、运营具有同一权限，若提升为 RBAC 1 以上，则可酌情分开）
+      HUMAN: 3, # 普通用户
+    }
+
+# 小程序相关配置
+wechat:
+  appId: 'wxbf9dbd65e5e3fb45'
+  secret: 'd4a2f337cd4b14110c3f269a0cca940d'
+  grantType: 'authorization_code'
