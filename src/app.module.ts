@@ -7,6 +7,7 @@ import { UserController } from './modules/user/user.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { GlobalModule } from './modules/global/global.module';
 import { GlobalController } from './modules/global/global.controller';
+import { FileModule } from './modules/file/file.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { GlobalController } from './modules/global/global.controller';
     UserModule,
     AuthModule,
     GlobalModule,
+    FileModule
   ],
   controllers: [UserController, GlobalController],
   providers: [],

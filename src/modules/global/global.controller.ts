@@ -7,9 +7,12 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GlobalService } from './global.service';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CreateSwiperDto } from './dto/swiper.create.dto';
 import { UpdateSwiperDto } from './dto/swiper.update.dto';
 
@@ -53,12 +56,22 @@ export class GlobalController {
     return this.globalService.updateSwiperItem(body);
   }
 
+  /**
+   * 删除一个Item项
+   * @param id
+   * @returns
+   */
   @ApiOperation({ summary: '删除一个Item项' })
   @Delete('/delete-swiper-item')
   removeSwiperItem(@Query('id') id: string) {
     return this.globalService.removeSwiperItem(id);
   }
 
+  /**
+   * 删除多个Item项
+   * @param ids
+   * @returns
+   */
   @ApiOperation({ summary: '删除多个Item项' })
   @Delete('/delete-swiper-item')
   removeSwiperItems(@Query('id') ids: string[]) {

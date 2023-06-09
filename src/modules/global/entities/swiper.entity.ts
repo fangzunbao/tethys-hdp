@@ -22,7 +22,7 @@ export class Swiper {
     type: 'varchar',
     length: 50,
     unique: true,
-    comment: '轮播图对应的套餐Id',
+    comment: '轮播图对应的套餐或菜品Id',
   })
   groupId: string;
 
