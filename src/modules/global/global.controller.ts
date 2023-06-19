@@ -3,16 +3,12 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Post,
   Put,
   Query,
-  UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GlobalService } from './global.service';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CreateSwiperDto } from './dto/swiper.create.dto';
 import { UpdateSwiperDto } from './dto/swiper.update.dto';
 
@@ -29,8 +25,6 @@ export class GlobalController {
   @ApiOperation({ summary: '创建一个轮播图项' })
   @Post('/create-swiper-item')
   createSwiperItem(@Body() body: CreateSwiperDto) {
-    console.log('body: ', body);
-
     return this.globalService.createSwiperItem(body);
   }
 
@@ -73,7 +67,7 @@ export class GlobalController {
    * @returns
    */
   @ApiOperation({ summary: '删除多个Item项' })
-  @Delete('/delete-swiper-item')
+  @Delete('/delete-swiper-items')
   removeSwiperItems(@Query('id') ids: string[]) {
     return this.globalService.removeSwiperItems(ids);
   }

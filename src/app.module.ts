@@ -8,6 +8,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { GlobalModule } from './modules/global/global.module';
 import { GlobalController } from './modules/global/global.controller';
 import { FileModule } from './modules/file/file.module';
+import { FoodModule } from './modules/food/food.module';
+import { FoodController } from './modules/food/food.controller';
 
 @Module({
   imports: [
@@ -32,9 +34,10 @@ import { FileModule } from './modules/file/file.module';
     UserModule,
     AuthModule,
     GlobalModule,
-    FileModule
+    FileModule,
+    FoodModule
   ],
-  controllers: [UserController, GlobalController],
+  controllers: [UserController, GlobalController, FoodController],
   providers: [],
 })
 export class AppModule {}

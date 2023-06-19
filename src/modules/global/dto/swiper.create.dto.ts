@@ -9,8 +9,8 @@ export class CreateSwiperDto {
   @IsNotEmpty({ message: '轮播图地址不能为空' })
   readonly imageUrl: string;
 
-  @ApiProperty({ description: '轮播图对应套餐Id' })
-  @IsNotEmpty({ message: '轮播图对应套餐Id不能为空' })
+  @ApiProperty({ description: '套餐或者菜品的Id' })
+  @IsNotEmpty({ message: '套餐或者菜品的Id不能为空' })
   readonly groupId: string;
 
   @ApiProperty({ description: '身份码' })

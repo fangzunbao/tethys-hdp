@@ -1,4 +1,12 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Food } from 'src/modules/food/entities/food.entity';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity({
   name: 'swiper',
@@ -22,7 +30,7 @@ export class Swiper {
     type: 'varchar',
     length: 50,
     unique: true,
-    comment: '轮播图对应的套餐或菜品Id',
+    comment: '套餐或者菜品的Id',
   })
   groupId: string;
 
@@ -52,6 +60,6 @@ export class Swiper {
   @UpdateDateColumn({
     type: 'datetime',
     comment: '修改时间',
-  }) 
+  })
   updateTime: Date;
 }

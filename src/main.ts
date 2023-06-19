@@ -21,6 +21,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   // 配置swagger
   const options = new DocumentBuilder()
+    .addBearerAuth() // 开启 BearerAuth 授权认证
     .setTitle('Tethty-hdp')
     .setDescription('待完善')
     .setVersion('1.1')

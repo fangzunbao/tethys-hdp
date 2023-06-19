@@ -23,7 +23,7 @@ import { HttpModule } from '@nestjs/axios';
     }),
     UserModule,
     ConfigModule,
-    HttpModule
+    HttpModule,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
