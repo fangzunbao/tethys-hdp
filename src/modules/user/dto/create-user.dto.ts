@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { UserOtherAccount } from '../entities/other.account.entity';
 
 export class CreateUserDto {
   @ApiProperty({ description: '主键Id' })
@@ -31,6 +32,15 @@ export class CreateUserDto {
   @ApiProperty({ description: '用户手机号' })
   readonly mobile: string;
 
+  @ApiProperty({ description: '微博账号' })
+  readonly weibo: string;
+
+  @ApiProperty({ description: '博客地址' })
+  readonly blog: string;
+
+  @ApiProperty({ description: '其他账号' })
+  readonly otherAccount: UserOtherAccount[];
+
   @ApiProperty({ description: '用户性别' })
   readonly gender: number;
 
@@ -44,5 +54,9 @@ export class CreateUserDto {
   readonly lastTime: Date;
 
   @ApiProperty({ description: '用户标签' })
-  readonly tag: string;
+  readonly tag: string[];
+
+  @ApiProperty({ description: '阅读习惯' })
+  readonly readingHabit: string[];
+
 }

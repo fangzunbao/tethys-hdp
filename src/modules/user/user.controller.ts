@@ -22,6 +22,8 @@ import { useDefaultUserConfig } from '../../config/roles';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { WechatLoginDTO } from './dto/wechat-login.dto';
+import { CreateUserOtherAccountDto } from './dto/create.otherAccount.dto';
+import { UpdateUserOtherAccountDto } from './dto/update.otherAccount.dto';
 
 const { ROLE_LIST } = useDefaultUserConfig();
 
@@ -35,7 +37,7 @@ export class UserController {
     private readonly configService: ConfigService,
   ) {}
 
-  private roles = this.configService.get<string>('user.roleList')
+  private roles = this.configService.get<string>('user.roleList');
 
   /**
    * 登录系统
@@ -62,7 +64,6 @@ export class UserController {
       wechat.encryptedData,
     );
   }
-  
 
   /**
    * 根据Token获取当前用户信息
@@ -90,7 +91,7 @@ export class UserController {
     return this.userService.create(user);
   }
 
-  /**
+  /**s
    * 根据Id查询用户信息
    * @param id 用户ID
    * @returns
@@ -169,5 +170,48 @@ export class UserController {
   @Post('/find-page-users')
   pageQueryFind(@Query() query, @Body() Body) {
     return this.userService.pageQueryFind(query, Body);
+  }
+
+  /**
+   * 新添加第三方账号
+   * @param body 
+   * @param id 
+   * @returns 
+   */
+  @ApiOperation({ summary: '新添加第三方账号' })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(new RbacGuard(ROLE_LIST.DEVELOPER))
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/create-user-other-account')
+  createOtherAccount(@Body() body: CreateUserOtherAccountDto, @Query('id') id) {
+    return this.userService.createOtherAccount(body, id);
+  }
+
+  /**
+   * 更新第三方账号
+   * @param update 
+   * @returns 
+   */
+  @ApiOperation({ summary: '更新第三方账号' })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(new RbacGuard(ROLE_LIST.DEVELOPER))
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/update-user-other-account')
+  updateOtherAccount(@Body() update: UpdateUserOtherAccountDto) {
+    return this.userService.updateOtherAccount(update);
+  }
+
+  /**
+   * 根据ID查找第三方账号信息
+   * @param id 
+   * @returns 
+   */
+  @ApiOperation({ summary: '根据ID查找第三方账号信息' })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(new RbacGuard(ROLE_LIST.DEVELOPER))
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/find-user-other-account-by-id')
+  findOtherAccountById(@Query('id') id) {
+    return this.userService.findOtherAccountById(id);
   }
 }

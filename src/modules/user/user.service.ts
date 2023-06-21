@@ -8,6 +8,7 @@ import {
   MoreThanOrEqual,
   Not,
   Repository,
+  createConnection,
 } from 'typeorm';
 import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
 import { createUniqueId } from 'src/utils/util';
@@ -16,12 +17,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PageDto } from '../common/dto/page.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { BasePage } from '../common/dto/entities/baseInfo.entity';
-import { promises } from 'dns';
+import { UserOtherAccount } from './entities/other.account.entity';
+import { CreateUserOtherAccountDto } from './dto/create.otherAccount.dto';
+import { UpdateUserOtherAccountDto } from './dto/update.otherAccount.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(UserOtherAccount)
+    private otherAccountRepository: Repository<UserOtherAccount>,
     private readonly config: ConfigService,
   ) {}
 
@@ -36,7 +41,20 @@ export class UserService {
     const hasPwd = encryptPassword(this.config.get('user.default'), salt);
     user.salt = salt;
     user.password = hasPwd;
-    return this.userRepository.save(user);
+    const userInfo = await this.userRepository.save(user);
+    const otherAccounts = [];
+    if (user.otherAccount && user.otherAccount.length > 0) {
+      user.otherAccount.forEach(async (item) => {
+        const otherAccount = new UserOtherAccount();
+        otherAccount.id = createUniqueId();
+        otherAccount.label = item.label;
+        otherAccount.value = item.value;
+        otherAccount.user = userInfo;
+        this.otherAccountRepository.save(otherAccount);
+        otherAccounts.push(otherAccount);
+      });
+    }
+    return await this.findOne(userInfo.id);
   }
 
   /**
@@ -45,7 +63,10 @@ export class UserService {
    * @returns
    */
   async findOneByOpenId(openId: string): Promise<User | null> {
-    return await this.userRepository.findOne({ where: { openId } });
+    return await this.userRepository.findOne({
+      where: { openId },
+      relations: ['otherAccount'],
+    });
   }
 
   /**
@@ -54,7 +75,10 @@ export class UserService {
    * @returns 用户信息｜null
    */
   async findOne(id: string): Promise<User | null> {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['otherAccount'],
+    });
     return user;
   }
 
@@ -64,10 +88,13 @@ export class UserService {
    * @returns
    */
   async findOneByName(loginName: string): Promise<User> {
-    return await this.userRepository.findOne({ where: { loginName } });
+    return await this.userRepository.findOne({
+      where: { loginName },
+      relations: ['otherAccount'],
+    });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     return this.userRepository.update(id, updateUserDto);
   }
 
@@ -116,5 +143,23 @@ export class UserService {
       },
     });
     return new BasePage(page.pageNum, page.pageSize, total, userList);
+  }
+
+  async createOtherAccount(body: CreateUserOtherAccountDto, id: string) {
+    const userInfo = await this.findOne(id);
+    const otherAccount = new UserOtherAccount();
+    otherAccount.id = createUniqueId();
+    otherAccount.label = body.label;
+    otherAccount.value = body.value;
+    otherAccount.user = userInfo;
+    return await this.otherAccountRepository.save(otherAccount);
+  }
+
+  async updateOtherAccount(body: UpdateUserOtherAccountDto) {
+    return this.otherAccountRepository.update(body.id, body);
+  }
+
+  async findOtherAccountById(id: string) {
+    return this.otherAccountRepository.findOne({ where: { id } });
   }
 }

@@ -1,11 +1,14 @@
+import { UserOtherAccount } from './other.account.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { USER_GENDER, USER_ROLE } from './enum';
 
 @Entity({
   name: 'users',
@@ -51,6 +54,14 @@ export class User {
   avatar: string;
 
   @Column({
+    type: 'enum',
+    enum: USER_GENDER,
+    nullable: true,
+    comment: '用户性别',
+  })
+  gender: number;
+
+  @Column({
     type: 'varchar',
     length: 255,
     nullable: true,
@@ -59,9 +70,9 @@ export class User {
   remark: string;
 
   @Column({
-    type: 'tinyint',
-    precision: 1,
-    default: 3,
+    type: 'enum',
+    enum: USER_ROLE,
+    default: USER_ROLE.HUMAN,
     comment:
       '用户权限 0-超级管理员 | 1-管理员 | 2-开发&测试&运营 | 3-普通用户（只能查看）',
   })
@@ -84,28 +95,40 @@ export class User {
   mobile: string;
 
   @Column({
-    type: 'tinyint',
-    precision: 1,
-    default: 1,
-    comment: '用户性别',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+    comment: '微博',
   })
-  gender: number;
+  weibo: string;
 
   @Column({
-    type: 'tinyint',
-    precision: 1,
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+    comment: '博客地址',
+  })
+  blog: string;
+
+  @OneToMany(
+    () => UserOtherAccount,
+    (userOtherAccount) => userOtherAccount.user,
+  )
+  otherAccount: UserOtherAccount[];
+
+  @Column({
+    type: 'enum',
+    enum: [0, 1],
     default: 1,
     comment: '用户状态 是否启用(1:启用, 0:停用)',
   })
   status: number;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: true,
-    comment: '用户标签',
-  })
-  tag: string;
+  @Column('simple-array', { nullable: true, comment: '用户标签' })
+  tag: string[];
+
+  @Column('simple-array', { nullable: true, comment: '用户阅读习惯' })
+  readingHabit: string[];
 
   @Column({
     type: 'varchar',
@@ -139,6 +162,6 @@ export class User {
   @UpdateDateColumn({
     type: 'datetime',
     comment: '修改时间',
-  }) 
+  })
   updateTime: Date;
 }
