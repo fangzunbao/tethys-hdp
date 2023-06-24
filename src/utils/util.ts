@@ -1,3 +1,5 @@
+import { pinyin } from 'pinyin-pro';
+
 /**
  * 创建一个15位的唯一ID
  * @returns 唯一ID
@@ -16,4 +18,37 @@ export const createUniqueId = () => {
     }
   }
   return year + dayOfMonth + dayOfWeek + random;
+};
+
+/**
+ * 创建树型数据
+ * @param data
+ * @param id
+ * @param list
+ * @returns
+ */
+export const getTreeList = (data, id, list) => {
+  for (const item of data) {
+    if (item.parent === id) {
+      list.push(item);
+    }
+  }
+  for (const item of list) {
+    item.children = [];
+    getTreeList(data, item.id, item.children);
+  }
+  console.log(list);
+
+  return list;
+};
+
+/**
+ * 生成指定字符串的拼音首字母
+ * @param value 
+ * @returns 
+ */
+export const createPinyin = (value: string) => {
+  return pinyin(value, { pattern: 'initial', type: 'string' })
+    .replace(/\s*/g, '')
+    .toLocaleUpperCase();
 };

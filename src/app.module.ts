@@ -5,6 +5,8 @@ import { UserModule } from './modules/user/user.module';
 import configuration from './config/index';
 import { UserController } from './modules/user/user.controller';
 import { AuthModule } from './modules/auth/auth.module';
+import { SystemModule } from './modules/system/system.module';
+import { SystemController } from './modules/system/system.controller';
 
 @Module({
   imports: [
@@ -28,8 +30,9 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    SystemModule
   ],
-  controllers: [UserController],
+  controllers: [UserController, SystemController],
   providers: [],
 })
 export class AppModule {}
