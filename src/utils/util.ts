@@ -37,8 +37,6 @@ export const getTreeList = (data, id, list) => {
     item.children = [];
     getTreeList(data, item.id, item.children);
   }
-  console.log(list);
-
   return list;
 };
 

@@ -69,7 +69,6 @@ export class SystemCode {
   @Column({
     type: 'varchar',
     length: 50,
-    default: null,
     comment: '父级Id',
   })
   parent: string;

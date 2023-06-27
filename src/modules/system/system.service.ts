@@ -20,12 +20,12 @@ export class SystemService {
 
   async createCode(body: CreateCodeDto) {
     body.id = createUniqueId();
-    body.pinyin = createPinyin(body.name)
+    body.pinyin = createPinyin(body.name);
     return await this.codeRepository.save(body);
   }
 
   async updateCode(body: UpdateCodeDto) {
-    body.name =createPinyin(body.name)
+    body.pinyin = createPinyin(body.name);
     return await this.codeRepository.update(body.id, body);
   }
 
@@ -58,11 +58,11 @@ export class SystemService {
 
   async findCode() {
     const codeList = await this.codeRepository.find({ cache: true });
-    return getTreeList(codeList, null, []);
+    return getTreeList(codeList, '', []);
   }
 
   async findCodeById(id: string) {
-    return await this.codeRepository.find({ where: { id }, cache: true });
+    return await this.codeRepository.findOne({ where: { id }, cache: true });
   }
 
   async findCodeChildren(id: string) {
@@ -75,12 +75,12 @@ export class SystemService {
   // 字典信息
   async createDict(body: CreateDictDto) {
     body.id = createUniqueId();
-    body.pinyin =createPinyin(body.name);
+    body.pinyin = createPinyin(body.name);
     return await this.dictRepository.save(body);
   }
 
   async updateDict(body: UpdateDictDto) {
-    body.name =createPinyin(body.name)
+    body.name = createPinyin(body.name);
     return await this.dictRepository.update(body.id, body);
   }
 
@@ -97,6 +97,6 @@ export class SystemService {
   }
 
   async findDictById(id: string) {
-    return await this.dictRepository.find({ where: { id }, cache: true });
+    return await this.dictRepository.findOne({ where: { id }, cache: true });
   }
 }
