@@ -80,7 +80,7 @@ export class SystemService {
   }
 
   async updateDict(body: UpdateDictDto) {
-    body.name = createPinyin(body.name);
+    body.pinyin = createPinyin(body.name);
     return await this.dictRepository.update(body.id, body);
   }
 
@@ -92,8 +92,8 @@ export class SystemService {
     return await this.dictRepository.delete(ids);
   }
 
-  async findDict() {
-    return await this.dictRepository.find({ cache: true });
+  async findDict(code: string) {
+    return await this.dictRepository.find({ where: { code }, cache: true });
   }
 
   async findDictById(id: string) {

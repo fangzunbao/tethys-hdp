@@ -121,8 +121,8 @@ export class SystemController {
   @UseGuards(new RbacGuard(ROLE_LIST.HUMAN))
   @UseGuards(AuthGuard('jwt'))
   @Get('/dict/find-dicts')
-  findDict() {
-    return this.systemService.findDict();
+  findDict(@Query('code') code:string) {
+    return this.systemService.findDict(code);
   }
 
   @ApiOperation({ summary: '根据Id查询字典信息' })
