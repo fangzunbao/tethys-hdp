@@ -7,6 +7,8 @@ import { UserController } from './modules/user/user.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { SystemModule } from './modules/system/system.module';
 import { SystemController } from './modules/system/system.controller';
+import { CategoryModule } from './modules/resource/category/category.module';
+import { CategoryController } from './modules/resource/category/category.controller';
 
 @Module({
   imports: [
@@ -30,9 +32,10 @@ import { SystemController } from './modules/system/system.controller';
     }),
     UserModule,
     AuthModule,
-    SystemModule
+    SystemModule,
+    CategoryModule,
   ],
-  controllers: [UserController, SystemController],
+  controllers: [UserController, SystemController, CategoryController],
   providers: [],
 })
 export class AppModule {}
