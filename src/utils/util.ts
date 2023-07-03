@@ -42,11 +42,28 @@ export const getTreeList = (data, id, list) => {
 
 /**
  * 生成指定字符串的拼音首字母
- * @param value 
- * @returns 
+ * @param value
+ * @returns
  */
 export const createPinyin = (value: string) => {
   return pinyin(value, { pattern: 'initial', type: 'string' })
     .replace(/\s*/g, '')
     .toLocaleUpperCase();
+};
+
+/**
+ * 将数组中相同类型的元素整理出来
+ * @param list 
+ * @returns 
+ */
+export const reFormatArray = (list: any[]) => {
+  if (!Array.isArray(list)) return [];
+  const newData = {};
+  list.forEach((item) => {
+    if (Object.keys(newData).indexOf(item.code) === -1) {
+      newData[item.code] = [];
+    }
+    newData[item.code].push(item);
+  });
+  return newData;
 };

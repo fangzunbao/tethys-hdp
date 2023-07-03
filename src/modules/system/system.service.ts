@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SystemCode } from './entities/code.entity';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SystemDict } from './entities/dict.entity';
 import { CreateCodeDto } from './dto/create.code.dto';
@@ -8,6 +8,7 @@ import { createPinyin, createUniqueId, getTreeList } from 'src/utils/util';
 import { UpdateCodeDto } from './dto/update.code.dto';
 import { CreateDictDto } from './dto/create.dict.dto';
 import { UpdateDictDto } from './dto/update.dict.dto';
+import { link } from 'fs';
 
 @Injectable()
 export class SystemService {
@@ -98,5 +99,12 @@ export class SystemService {
 
   async findDictById(id: string) {
     return await this.dictRepository.findOne({ where: { id }, cache: true });
+  }
+
+  async findDictByCode() {
+    return  await this.dictRepository
+    .createQueryBuilder('SystemCode')
+    .orderBy('SystemCode.code')
+    .getMany();
   }
 }

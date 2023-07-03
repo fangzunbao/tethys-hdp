@@ -121,7 +121,7 @@ export class SystemController {
   @UseGuards(new RbacGuard(ROLE_LIST.HUMAN))
   @UseGuards(AuthGuard('jwt'))
   @Get('/dict/find-dicts')
-  findDict(@Query('code') code:string) {
+  findDict(@Query('code') code: string) {
     return this.systemService.findDict(code);
   }
 
@@ -132,4 +132,6 @@ export class SystemController {
   findDictById(@Query('id') id: string) {
     return this.systemService.findDictById(id);
   }
+
+  
 }

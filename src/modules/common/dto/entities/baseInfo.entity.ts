@@ -7,5 +7,7 @@ export class BasePage<T> {
     private pageSize: number,
     private total: number,
     private records: T[],
+    private systemCode?: {},
+    private bookCategory?: {},
   ) {}
 }

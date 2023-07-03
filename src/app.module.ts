@@ -9,6 +9,10 @@ import { SystemModule } from './modules/system/system.module';
 import { SystemController } from './modules/system/system.controller';
 import { CategoryModule } from './modules/resource/category/category.module';
 import { CategoryController } from './modules/resource/category/category.controller';
+import { LibraryBookModule } from './modules/book/library/library.module';
+import { LibraryBookController } from './modules/book/library/library.controller';
+import { ReadingBookModule } from './modules/book/reading/reading.module';
+import { ReadingBookController } from './modules/book/reading/reading.controller';
 
 @Module({
   imports: [
@@ -34,8 +38,16 @@ import { CategoryController } from './modules/resource/category/category.control
     AuthModule,
     SystemModule,
     CategoryModule,
+    LibraryBookModule,
+    ReadingBookModule,
   ],
-  controllers: [UserController, SystemController, CategoryController],
+  controllers: [
+    UserController,
+    SystemController,
+    CategoryController,
+    LibraryBookController,
+    ReadingBookController,
+  ],
   providers: [],
 })
 export class AppModule {}
