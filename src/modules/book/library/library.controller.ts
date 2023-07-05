@@ -81,6 +81,12 @@ export class LibraryBookController {
     return this.libraryBookService.removeLibraryBookList(ids);
   }
 
+  /**
+   * 分页查询书柜图书信息
+   * @param query 
+   * @param Body 
+   * @returns 
+   */
   @ApiOperation({ summary: '分页查询书柜图书信息' })
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(new RbacGuard(ROLE_LIST.HUMAN))
@@ -88,5 +94,14 @@ export class LibraryBookController {
   @Post('/library/find-page-library-books')
   pageQueryFind(@Query() query, @Body() Body) {
     return this.libraryBookService.pageQueryFind(query, Body);
+  }
+
+  @ApiOperation({ summary: '根据图书名称关键词查询书柜图书信息' })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(new RbacGuard(ROLE_LIST.HUMAN))
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/library/find-library-books-by-title')
+  findLibraryBooksBytitle(@Query('title') title:string) {
+    return this.libraryBookService.findLibraryBooksBytitle(title);
   }
 }

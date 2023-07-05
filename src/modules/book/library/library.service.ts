@@ -54,9 +54,9 @@ export class LibraryBookService {
         ...(query.category && { category: query.category }),
         ...(query.status && { status: query.status }),
         ...(query.buy && { buy: query.buy }),
-        ...(query.publisher && { publisher: Like(`%${query.publisher}%`) }),
-        ...(query.buyStore && { buyStore: Like(`%${query.buyStore}%`) }),
-        ...(query.buyPlatform && { buyPlatform: Like(`%${query.buyPlatform}%`) }),
+        ...(query.publisher && { publisher: query.publisher }),
+        ...(query.buyStore && { buyStore: query.buyStore }),
+        ...(query.buyPlatform && { buyPlatform: query.buyPlatform }),
         ...(query.deliveryCompany && {
           deliveryCompany: query.deliveryCompany,
         }),
@@ -103,7 +103,7 @@ export class LibraryBookService {
     });
     const dictList = reFormatArray(await this.systemService.findDictByCode());
 
-    const categories = await this.categoryService.findCategoryTree()
+    const categories = await this.categoryService.findCategoryTree();
 
     return new BasePage(
       page.pageNum,
@@ -111,7 +111,13 @@ export class LibraryBookService {
       total,
       libraryList,
       dictList,
-      categories
+      categories,
     );
+  }
+
+  async findLibraryBooksBytitle(title: string) {
+    return await this.libraryBookRepository.find({
+      where: { title: Like(`%${title}%`) },
+    });
   }
 }

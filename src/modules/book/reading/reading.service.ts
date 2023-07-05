@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThanOrEqual, Like, MoreThanOrEqual, Repository } from 'typeorm';
-import { createUniqueId } from 'src/utils/util';
+import { createUniqueId, reFormatArray } from 'src/utils/util';
 import { UpdateLibraryBookDto } from '../dto/update.library.book.dto';
 import { PageDto } from 'src/modules/common/dto/page.dto';
 import { QueryBookDto } from '../dto/query.book.dto';
 import { BasePage } from 'src/modules/common/dto/entities/baseInfo.entity';
 import { ReadingBook } from '../entities/reading.book.entity';
 import { CreateReadingBookDto } from '../dto/create.reading.book.dto';
+import { CategoryService } from 'src/modules/resource/category/category.service';
+import { SystemService } from 'src/modules/system/system.service';
 
 @Injectable()
 export class ReadingBookService {
   constructor(
     @InjectRepository(ReadingBook)
     private readingBookRepository: Repository<ReadingBook>,
+    private readonly systemService: SystemService,
+    private readonly categoryService: CategoryService,
   ) {}
 
   async createReadingBook(body: CreateReadingBookDto) {
@@ -85,6 +89,17 @@ export class ReadingBookService {
       },
     });
 
-    return new BasePage(page.pageNum, page.pageSize, total, libraryList);
+    const dictList = reFormatArray(await this.systemService.findDictByCode());
+
+    const categories = await this.categoryService.findCategoryTree();
+
+    return new BasePage(
+      page.pageNum,
+      page.pageSize,
+      total,
+      libraryList,
+      dictList,
+      categories,
+    );
   }
 }

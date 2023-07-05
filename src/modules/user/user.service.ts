@@ -8,7 +8,6 @@ import {
   MoreThanOrEqual,
   Not,
   Repository,
-  createConnection,
 } from 'typeorm';
 import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
 import { createUniqueId } from 'src/utils/util';

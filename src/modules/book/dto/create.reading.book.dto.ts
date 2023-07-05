@@ -3,9 +3,6 @@ import { IsNotEmpty } from 'class-validator';
 import { CreateBookDto } from './create.book.dto';
 
 export class CreateReadingBookDto extends PartialType(CreateBookDto) {
-  @ApiProperty({ description: '添加时间' })
-  @IsNotEmpty({ message: '添加时间必填' })
-  readonly addTime: Date;
 
   @ApiProperty({ description: '开始阅读时间' })
   readonly startTime: Date;

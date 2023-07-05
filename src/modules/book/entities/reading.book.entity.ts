@@ -8,21 +8,16 @@ import { Book } from './book.entity';
   },
 })
 export class ReadingBook extends Book {
-  @Column({
-    type: 'date',
-    comment: '添加时间',
-  })
-  addTime: Date;
 
   @Column({
-    type: 'date',
+    type: 'datetime',
     nullable: true,
     comment: '开始阅读时间',
   })
   startTime: Date;
 
   @Column({
-    type: 'date',
+    type: 'datetime',
     nullable: true,
     comment: '结束阅读时间',
   })
