@@ -39,13 +39,13 @@ export class AuthService {
       } else if (user.status === 0) {
         throw new HttpException(
           '账户已停用，请联系管理员',
-          HttpStatus.BAD_GATEWAY,
+          HttpStatus.FORBIDDEN,
         );
       } else {
-        throw new HttpException('用户名或密码错误', HttpStatus.BAD_GATEWAY);
+        throw new HttpException('用户名或密码错误', HttpStatus.FORBIDDEN);
       }
     } else {
-      throw new HttpException('查无此人', HttpStatus.BAD_GATEWAY);
+      throw new HttpException('查无此人', HttpStatus.FORBIDDEN);
     }
   }
 
